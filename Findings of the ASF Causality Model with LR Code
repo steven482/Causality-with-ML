@@ -1,0 +1,13 @@
+# Evaluate the causality model using Linear Regression
+y_true_causality = y_causality  # Actual virus load
+y_pred_causality = model_causality.predict(X_causality)  # Predicted virus load
+
+# Compute Mean Absolute Error (MAE) and R-squared (R²) for model accuracy
+mae_causality = mean_absolute_error(y_true_causality, y_pred_causality)
+r2_causality = r2_score(y_true_causality, y_pred_causality)
+
+# Convert R² to percentage accuracy
+accuracy_percentage = r2_causality * 100
+
+# Display results
+mae_causality, r2_causality, accuracy_percentage
