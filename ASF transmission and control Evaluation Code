@@ -1,0 +1,20 @@
+# Define features (X) and target variable (y) for machine learning
+X_control = df_transmission_control[["Biosecurity_Effectiveness (%)", "Culling_Effectiveness (%)", "Surveillance_Effectiveness (%)"]]
+y_control = df_transmission_control["Transmission_Rate"]
+
+# Split the dataset into training and testing sets
+X_train_control, X_test_control, y_train_control, y_test_control = train_test_split(X_control, y_control, test_size=0.2, random_state=42)
+
+# Train a Random Forest model to predict ASF transmission rate based on control measures
+model_control = RandomForestRegressor(n_estimators=100, random_state=42)
+model_control.fit(X_train_control, y_train_control)
+
+# Make predictions
+y_pred_control = model_control.predict(X_test_control)
+
+# Evaluate model performance
+mae_control = mean_absolute_error(y_test_control, y_pred_control)
+r2_control = r2_score(y_test_control, y_pred_control)
+
+# Display performance metrics
+mae_control, r2_control
