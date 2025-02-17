@@ -1,0 +1,49 @@
+import numpy as np
+import networkx as nx
+from sklearn.linear_model import LinearRegression
+
+# Creating a structured dataset for causality analysis
+causality_data = {
+    "Symptom": [
+        "Fever", "Loss of Appetite", "Lethargy", "Skin Lesions", "Respiratory Problems",
+        "Digestive Symptoms", "Hemorrhages", "Nervous Symptoms", "Cyanosis", "Mortality Rate"
+    ],
+    "Wild_Boar_Severity": [4, 3, 4, 3, 2, 3, 5, 4, 4, 5],  # Severity score from 1-5
+    "Domestic_Pig_Severity": [5, 4, 5, 4, 3, 4, 5, 5, 5, 5],  # Severity score from 1-5
+    "Virus_Load": [90, 85, 88, 80, 75, 82, 95, 92, 90, 98],  # Virus concentration level (%)
+}
+
+# Convert to DataFrame
+df_causality = pd.DataFrame(causality_data)
+
+# Define features (X) and target variable (y)
+X_causality = df_causality[["Wild_Boar_Severity", "Domestic_Pig_Severity"]]
+y_causality = df_causality["Virus_Load"]
+
+# Train a linear regression model to determine causal relationships
+model_causality = LinearRegression()
+model_causality.fit(X_causality, y_causality)
+
+# Predict virus load based on severity of symptoms
+y_pred_causality = model_causality.predict(X_causality)
+
+# Compute correlation between symptoms and virus load
+correlation_causality = df_causality.corr()
+
+# Display the causality dataset
+tools.display_dataframe_to_user(name="ASF Causality Model Data", dataframe=df_causality)
+
+# Display correlation matrix
+tools.display_dataframe_to_user(name="Causality Correlation Matrix", dataframe=correlation_causality)
+
+# Create a causal graph using NetworkX
+G = nx.DiGraph()
+for index, row in df_causality.iterrows():
+    G.add_edge("ASF Virus", row["Symptom"], weight=row["Virus_Load"])
+
+# Draw the causal graph
+plt.figure(figsize=(10, 6))
+pos = nx.spring_layout(G, seed=42)
+nx.draw(G, pos, with_labels=True, node_color="lightblue", edge_color="gray", node_size=3000, font_size=10)
+plt.title("Causal Relationship Between ASF Virus and Symptoms")
+plt.show()
