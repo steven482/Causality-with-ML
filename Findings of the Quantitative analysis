@@ -1,0 +1,19 @@
+# Performing Quantitative Analysis using Statistical Methods
+
+# Compute summary statistics for transmission and control dataset
+summary_stats = df_transmission_control.describe()
+
+# Compute correlation matrix to assess relationships between ASF control measures and transmission rate
+correlation_matrix_control = df_transmission_control.corr()
+
+# Display the summary statistics
+tools.display_dataframe_to_user(name="Summary Statistics of ASF Control Measures", dataframe=summary_stats)
+
+# Display the correlation matrix
+tools.display_dataframe_to_user(name="Correlation Matrix of ASF Control Measures", dataframe=correlation_matrix_control)
+
+# Plot the correlation heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_matrix_control, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+plt.title("Correlation Between ASF Control Measures and Transmission Rate")
+plt.show()
