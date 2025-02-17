@@ -1,0 +1,14 @@
+# Train a Random Forest model for causality analysis
+model_rf_causality = RandomForestRegressor(n_estimators=100, random_state=42)
+model_rf_causality.fit(X_causality, y_causality)
+
+# Predict virus load based on severity of symptoms using Random Forest
+y_pred_rf_causality = model_rf_causality.predict(X_causality)
+
+# Evaluate the model performance
+mae_rf_causality = mean_absolute_error(y_causality, y_pred_rf_causality)
+r2_rf_causality = r2_score(y_causality, y_pred_rf_causality)
+accuracy_rf_percentage = r2_rf_causality * 100
+
+# Display results
+mae_rf_causality, r2_rf_causality, accuracy_rf_percentage
