@@ -1,0 +1,48 @@
+import pandas as pd
+
+# Load the uploaded CSV file
+csv_file_path = "/mnt/data/ASF_Data_Classification.csv"
+df = pd.read_csv(csv_file_path)
+
+# Display the first few rows of the dataset to verify structure
+df.head()
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Selecting relevant aspects for comparison
+comparative_df = df[df["Category"].isin(["Clinical Aspect", "Biological Aspect"])]
+
+# Plot comparison of symptoms
+plt.figure(figsize=(12, 6))
+sns.barplot(y=comparative_df["Aspect"], x=comparative_df["Wild Boar"], color='blue', label='Wild Boar', orient='h')
+sns.barplot(y=comparative_df["Aspect"], x=comparative_df["Domestic Pigs"], color='red', label='Domestic Pigs', orient='h')
+
+plt.xlabel("Severity or Frequency")
+plt.ylabel("Symptoms and Biological Factors")
+plt.title("Comparative Analysis of ASF Impact on Domestic Pigs vs. Wild Boars")
+plt.legend()
+plt.show()
+###########################################Fist line of code##################
+# Display structured comparative data for further machine learning use
+tools.display_dataframe_to_user(name="Comparative ASF Analysis", dataframe=comparative_df)
+from sklearn.preprocessing import LabelEncoder
+
+# Copying the dataframe for preprocessing
+df_numeric = comparative_df.copy()
+
+# Encoding categorical variables into numeric values
+label_encoder = LabelEncoder()
+df_numeric["Wild Boar"] = label_encoder.fit_transform(df_numeric["Wild Boar"])
+df_numeric["Domestic Pigs"] = label_encoder.fit_transform(df_numeric["Domestic Pigs"])
+
+# Display processed data for analysis
+tools.display_dataframe_to_user(name="Preprocessed ASF Comparative Data", dataframe=df_numeric)
+
+# Perform correlation analysis
+correlation_matrix = df_numeric.corr()
+
+# Plot heatmap for correlation analysis
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+plt.title("Correlation Between ASF Factors in Domestic Pigs and Wild Boars")
+plt.show()
